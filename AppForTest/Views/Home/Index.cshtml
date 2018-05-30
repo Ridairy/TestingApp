@@ -1,0 +1,53 @@
+﻿@using AppForTest.Helpers
+@model AppForTest.Models.MainView
+@{
+    ViewBag.Title = "Home Page";
+}
+@using (Html.BeginForm("Index")) {
+    @Html.AntiForgeryToken()
+ <div class="container">
+    <div class="row">
+        <div class="col-6 offset-3" style="">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    @Html.DropDownListFor(m => m.txtName, new SelectList(ViewBag.Texts),new {@class= "form-control" })
+                </div>
+                    @Html.EditorFor(m=>m.word, new {@class="form-control", @placeholder="Enter your search word...",@aria_describedby="WordInput" })
+                <div class="input-group-append">
+                    <input class="btn" type="submit" onClick="DoSearch()" value="Send" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-top:20px">
+        <div class="col-12">
+            <h3 class="text-center">All searches:</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Count</th>
+                        <th scope="col">Search word</th>
+                        <th scope="col">Saved sentence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var s in Model.sentences)
+{
+                        <tr>
+                            <th scope="row">@s.id</th>
+                            <th>@s.matchs</th>
+                            <th>@s.searchhWord</th>
+                            <th>@s.sentence</th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="btn-group">
+        @Html.PageLinks(Model.PageInfo,x=>Url.Action("Index",new { page = x }))
+    </div>
+</div>
+}
+
